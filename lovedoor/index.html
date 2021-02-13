@@ -1,0 +1,113 @@
+<!doctype>
+<html>
+<head>
+
+	<!-- Place this data between the <head> tags of your website -->
+	<title>it's a(door)able</title>
+	<meta name="description" content="a one-minute minigame."/>
+	<link rel="icon" type="image/png" href="favicon.png">
+
+	<!-- Schema.org markup for Google+ -->
+	<meta itemprop="name" content="it's a(door)able">
+	<meta itemprop="description" content="a one-minute minigame.">
+	<meta itemprop="image" content="http://ncase.me/door/thumbnail.png">
+
+	<!-- Open Graph data -->
+	<meta property="og:title" content="it's a(door)able">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="http://ncase.me/door/">
+	<meta property="og:image" content="http://ncase.me/door/thumbnail.png">
+	<meta property="og:description" content="a one-minute minigame.">
+	<meta property="og:site_name" content="it's a(door)able">
+
+	<!-- Style -->
+	<link rel="stylesheet" type="text/css" href="css/index.css"> 
+
+</head>
+<body>
+
+	<div id="loading"><div>LOADING</div></div>
+
+	<div id="whole_container">
+
+		<!--span style="display:none"-->
+		<div id="screen_one">
+			<canvas id="canvas_intro"></canvas>
+		</div>
+
+		<div id="screen_two">
+			<div id="canvas_container">
+
+				<canvas id="canvas_1" width="300" height="380"></canvas>
+				<canvas id="canvas_2" width="300" height="380"></canvas>
+				<canvas id="canvas_3" width="300" height="380" style="margin:0"></canvas>
+				
+				<div id="valentines_text"></div>
+				<div id="rewind_text">rewinding...</div>
+				<div id="replay_text">playing back...</div>
+
+			</div>
+		</div>
+		<!--/span-->
+
+		<div id="screen_three">
+
+			<div id="bottom">
+				<a href="https://twitter.com/ncasenmare">made by @ncasenmare</a>
+				|
+				<a href="https://github.com/ncase/door">open source code</a>
+			</div>
+
+			<div id="end_container">
+				
+				<span style="font-size:38px;">P.S: you can add your own personal message!</span>
+				<input id="your_message" placeholder="(enter lovely message)"></input>
+				
+				<span>then just copy &amp; send this link to your lover(s):</span>
+				<input id="your_link" readonly></input>
+
+				<span>or, if you wanna send your message out to everyone:</span>
+				<div id="share">
+					<div id="share_facebook" onclick="return socialShare.call(this,event,'facebook');"></div>
+					<div id="share_twitter" onclick="return socialShare.call(this,event,'twitter');"></div>
+					<div id="share_plus" onclick="return socialShare.call(this,event,'plus');"></div>
+					<div id="share_tumblr" onclick="return socialShare.call(this,event,'tumblr');"></div>
+					<div id="share_reddit" onclick="return socialShare.call(this,event,'reddit');"></div>
+					<div id="share_stumbleupon" onclick="return socialShare.call(this,event,'stumbleupon');"></div>
+				</div>
+
+				<span style="font-size:10px;color: #999;">
+					<span style="font-size: 19px;">and lastly, if you wanna show this</span>
+					<br>
+					<span style="font-size: 16px;">minigame's creator some love, you can</span>
+					<br>
+					<a href="https://www.patreon.com/ncase" target="_blank" style="text-decoration: none;">
+						<div id="support">support me on patreon</div>
+					</a>
+					<span style="font-size: 24px;">so I can keep making free</span>
+					<br>
+					<span style="font-size: 20px;">open-source playable silliness.</span>
+				</span>
+
+				<br>
+				<br>
+
+				<span style="font-size:30px">
+					thanks for playing! &lt;3
+				</span>
+
+			</div>
+		</div>
+		
+	</div>
+</body>
+</html>
+
+<script src="js/Key.js"></script>
+<script src="js/game.js"></script>
+<script src="js/popup.js"></script>
+<script src="js/soundjs-0.6.0.min.js"></script>
+
+<script>
+//STAGE = 4;
+</script>
