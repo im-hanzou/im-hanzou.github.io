@@ -299,6 +299,24 @@
 		  		font-size: 10pt;
 		  	}
   		}
+            .touchme{
+                position: absolute;
+                border-radius: 50%;
+                width: 50px;
+                margin: 5px;
+                padding: 5px;
+  			    font-size: 10px;
+  			    top: 1%;
+  			    left: 1%;
+                text-align: center;
+                font-weight: bold;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                background-color:#FFC0CB;
+            }
+            .touchme:hover{
+      	        background-color: #FFFDD0;
+        }
+
 	  </style>
 	</head>
 	<body onload="init()">
@@ -363,6 +381,13 @@
 		<div class="bg blue"></div>
 		<div class="bg custom"></div>
 		<div class="container">
+	<div class="touchme" onclick="woi()">Touch Me!
+                <script>function woi() {
+                    alert("Hehh jangan ngambek mulu!\n"+"Jangan lupa makan teratur biar gemuk\n"+"Jangan terlalu overthinking karna ak sayang km\n"+"All iz well, Sehat terus ya Amel <3");
+                }
+                    </script>
+        </div>
+
 			<div class="quotes">
 				<p id="quotation"></p>
 				<p id="source"></p>
