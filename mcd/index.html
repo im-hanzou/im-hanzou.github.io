@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>McDonald's ID PromoScanStruk Tool</title>
+    <link rel="icon" type="image/png" href="https://flagpedia.net/data/flags/emoji/openmoji/256x256/id.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        
+        /* Scrollbar Styles */
+        textarea::-webkit-scrollbar, pre::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track, pre::-webkit-scrollbar-track {
+            background: #334155;
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb, pre::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover, pre::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Loader Animation */
+        .loader {
+            border: 3px solid #374151;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Glass Effect */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Tab Styles */
+        .tab-button {
+            position: relative;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.3s ease;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        
+        .tab-button:hover {
+            color: #e2e8f0;
+        }
+        
+        .tab-button.active {
+            color: #ffffff;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        }
+        
+        .struk-container {
+            width: 300px;
+            padding: 25px 20px 35px 20px;
+            background: #ffffff;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    #ffffff,
+                    #ffffff 2px,
+                    #fafafa 2px,
+                    #fafafa 4px
+                );
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.1),
+                0 8px 16px rgba(0,0,0,0.05);
+            margin: 0 auto 20px;
+            font-family: 'Courier New', monospace;
+            color: #000;
+            border-radius: 3px 3px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .struk-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: url('data:image/svg+xml;utf8,<svg width="100%" height="8" xmlns="http://www.w3.org/2000/svg"><path d="M0 8 L5 0 L10 8 L15 0 L20 8 L25 0 L30 8 L35 0 L40 8 L45 0 L50 8 L55 0 L60 8 L65 0 L70 8 L75 0 L80 8 L85 0 L90 8 L95 0 L100 8" fill="white"/></svg>') repeat-x;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .logo-bars {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .bar {
+            width: 25px;
+            height: 6px;
+            background-color: black;
+            margin-bottom: 1px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+            vertical-align: top;
+            margin-top: -2px;
+        }
+
+        .transaction-details,
+        .item-list,
+        .payment-details,
+        .footer {
+            margin-bottom: 10px;
+        }
+
+        .transaction-details p,
+        .item-list p,
+        .payment-details p,
+        .footer p {
+            margin: 2px 0;
+            font-size: 11px;
+        }
+
+        .item-row,
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 2px 0;
+            font-size: 11px;
+        }
+
+        .item-details {
+            margin-left: 0px;
+            font-size: 11px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-weight: normal;
+            font-size: 11px;
+        }
+
+        .centered {
+            text-align: center;
+        }
+
+        .qr-code {
+        text-align: center;
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+}
+
+        .qr-code img {
+            width: 50px;
+            height: 50px;
+        }
+
+        hr.solid {
+            border: none;
+            border-top: 1px solid #000;
+            margin: 8px 0;
+        }
+
+        .bold-font {
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 opacity-5">
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 20px 20px;"></div>
+    </div>
+
+    <div class="glass-card rounded-2xl shadow-2xl w-full max-w-4xl neon-glow relative z-10">
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-slate-700/50">
+            <button class="tab-button active" onclick="switchTab('mcdonalds')">
+                🍔 McDonald's Registrar
+            </button>
+            <button class="tab-button" onclick="switchTab('familymart')">
+                🧾 Receipt Generator
+            </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="p-6 sm:p-8">
+            <!-- McDonald's Tab -->
+            <div id="mcdonalds-tab" class="tab-content">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl sm:text-4xl font-bold gradient-text mb-2">McDonald's Indonesia</h1>
+                    <p class="text-slate-400 text-sm">API Registration Generator</p>
+                </div>
+
+                <form id="apiRequestForm" class="space-y-6">
+                    <div class="hidden">
+                        <input type="email" id="email" name="email" readonly>
+                        <input type="text" id="device_id" name="device_id" readonly>
+                        <input type="text" id="full_name" name="full_name" readonly>
+                    </div>
+
+                    <div>
+                        <button type="submit" id="submitButton"
+                                class="w-full flex items-center justify-center py-4 px-6 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200 transform hover:scale-105">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            Generate
+                            <span id="loader" class="loader hidden"></span>
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="mt-6 flex items-center justify-center space-x-3">
+                    <span id="messageInfo" class="text-sm font-medium"></span>
+                    <button id="copyEmailButton" class="hidden px-4 py-2 text-xs font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-sm transition-all duration-150 transform hover:scale-105">
+                        📧 Copy Email
+                    </button>
+                </div>
+
+                <div class="mt-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-slate-200">Response API:</h2>
+                        <button id="clearResponseButton" class="text-xs text-red-400 hover:text-red-300 font-medium px-3 py-1 rounded-md border border-red-400/20 hover:border-red-300/40 transition-colors">
+                            🗑️ Clear
+                        </button>
+                    </div>
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-700/50 min-h-[120px] max-h-[350px] overflow-y-auto shadow-inner backdrop-blur-sm">
+                        <pre id="responseOutput" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap break-all font-mono leading-relaxed"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FamilyMart Tab -->
+            <div id="familymart-tab" class="tab-content hidden">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl sm:text-4xl font-bold gradient-text mb-2">FamilyMart Indonesia</h1>
+                    <p class="text-slate-400 text-sm">Struk Generator</p>
+                </div>
+
+                <div class="struk-container">
+                    <div class="logo">
+                        <div class="logo-bars">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                        <span class="logo-text">FamilyMart</span>
+                    </div>
+
+                    <div class="transaction-details centered">
+                        <p>STORE : <span id="storeName"></span></p>
+                        <p id="datetime"></p>
+                        <p>RCT NO : <span class="bold-font" id="rctcode"></span></p>
+                        <p>CASHIER : <span id="cashierName"></span></p>
+                        <h3><b>*SALES RECEIPT*</b></h3>
+                    </div>
+
+                    <div class="item-list">
+                        <div class="item-row">
+                            <span>Coca Cola Zero 390ml</span>
+                            <span>6,300</span>
+                        </div>
+                        <div class="item-details">6,300 X 1</div>
+                        
+                        <div class="item-row">
+                            <span>Coca Cola Pet 250ml</span>
+                            <span>17,600</span>
+                        </div>
+                        
+                        <div class="total-row">
+                            <span>TOTAL</span>
+                            <span>Rp 23,900</span>
+                        </div>
+                    </div>
+
+                    <hr class="solid">
+
+                    <div class="payment-details">
+                        <div class="payment-row">
+                            <span>DANA</span>
+                            <span>23,900</span>
+                        </div>
+                        <p id="kodePembayaran" style="margin-left:0px; text-align:left; font-size: 11px;"></p>
+                    </div>
+
+                    <hr class="solid">
+
+                    <div class="payment-details">
+                        <div class="payment-row">
+                            <span>TOTAL PAID</span>
+                            <span>Rp 23,900</span>
+                        </div>
+                        <div class="payment-row">
+                            <span>CHANGES</span>
+                            <span>0</span>
+                        </div>
+                        <div class="payment-row">
+                            <span># ITEM SOLD</span>
+                            <span>2</span>
+                        </div>
+                        <div class="payment-row">
+                            <span>DPP Nilai Lain</span>
+                            <span>Rp 2,132</span>
+                        </div>
+                        <div class="payment-row">
+                            <span>PPP</span>
+                            <span>PPP 1,0</span>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <p>Harga sudah termasuk pajak</p>
+                        <p>PT Fajar Mitra Indah</p>
+                        <p>WA Business: 0898-3862-8998</p>
+                        <p>IG & TIKTOK: @FamilyMartID</p>
+                    </div>
+
+                    <div class="qr-code">
+                        <img id="qrCode" src="" alt="QR Code">
+                    </div>
+                </div>
+
+                <button class="w-full flex items-center justify-center py-4 px-6 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200 transform hover:scale-105" onclick="generateNewReceipt()">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    Generate New Receipt
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-sm text-slate-500 mt-8 pb-4 relative z-10">
+        <div class="flex items-center justify-center space-x-2">
+            <img src="https://flagpedia.net/data/flags/emoji/openmoji/256x256/id.png" 
+                 alt="🇮🇩" 
+                 class="w-4 h-4 rounded-sm">
+            <span>Tool untuk testing dan edukasi - Gunakan dengan bijak - Recoded by <a href="https://github.com/im-hanzou" target="_blank">IM-Hanzou</a></span>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Switching Function
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // McDonald's API Generator Code
+        const form = document.getElementById('apiRequestForm');
+        const submitButton = document.getElementById('submitButton');
+        const loader = document.getElementById('loader');
+        const responseOutput = document.getElementById('responseOutput');
+        const deviceIdInput = document.getElementById('device_id');
+        const emailInput = document.getElementById('email');
+        const fullNameInput = document.getElementById('full_name');
+        const clearResponseButton = document.getElementById('clearResponseButton');
+        const messageInfoSpan = document.getElementById('messageInfo');
+        const copyEmailButton = document.getElementById('copyEmailButton');
+
+        let currentSuccessEmail = '';
+
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function getRandomNumber(digits) {
+            return Math.floor(Math.random() * Math.pow(10, digits)).toString().padStart(digits, '0');
+        }
+
+        function generateIndonesianEmail() {
+            const firstNames = [
+                "adrian", "budi", "sari", "doni", "eka", "fajar", "gita", "hadi", "indri", "joko",
+                "kartika", "lina", "made", "nina", "oscar", "putri", "qori", "rizki", "sinta", "tono",
+                "umi", "vina", "wati", "yoga", "zahra", "agus", "bayu", "citra", "dewi", "edi",
+                "fitri", "galih", "hesti", "imam", "jeni", "kiki", "lusi", "mira", "nanda", "okta"
+            ];
+            
+            const lastNames = [
+                "saputra", "pratama", "wijaya", "kusuma", "anggraeni", "permata", "santoso", "lestari", 
+                "maharani", "nugroho", "utami", "hermanto", "salsabila", "ramadhan", "purnama", "safitri",
+                "kurniawan", "rahayu", "setiawan", "handayani", "maulana", "fitriani", "budiman", "kartini",
+                "suryadi", "melati", "pradana", "andini", "firmansyah", "pertiwi", "gunawan", "cahyani",
+                "wibowo", "mulyani", "hakim", "damayanti", "irawan", "oktaviani", "surya", "puspita"
+            ];
+
+            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+            const randomNumber = getRandomNumber(5);
+            
+            return `${firstName}.${lastName}.${randomNumber}@gmail.com`;
+        }
+
+        function generateIndonesianFullName() {
+            const firstNames = [
+                "Adrian", "Budi", "Sari", "Doni", "Eka", "Fajar", "Gita", "Hadi", "Indri", "Joko",
+                "Kartika", "Lina", "Made", "Nina", "Oscar", "Putri", "Qori", "Rizki", "Sinta", "Tono",
+                "Umi", "Vina", "Wati", "Yoga", "Zahra", "Agus", "Bayu", "Citra", "Dewi", "Edi",
+                "Fitri", "Galih", "Hesti", "Imam", "Jeni", "Kiki", "Lusi", "Mira", "Nanda", "Okta"
+            ];
+            
+            const lastNames = [
+                "Saputra", "Pratama", "Wijaya", "Kusuma", "Anggraeni", "Permata", "Santoso", "Lestari", 
+                "Maharani", "Nugroho", "Utami", "Hermanto", "Salsabila", "Ramadhan", "Purnama", "Safitri",
+                "Kurniawan", "Rahayu", "Setiawan", "Handayani", "Maulana", "Fitriani", "Budiman", "Kartini",
+                "Suryadi", "Melati", "Pradana", "Andini", "Firmansyah", "Pertiwi", "Gunawan", "Cahyani",
+                "Wibowo", "Mulyani", "Hakim", "Damayanti", "Irawan", "Oktaviani", "Surya", "Puspita"
+            ];
+
+            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+            
+            return `${firstName} ${lastName}`;
+        }
+
+        // Event Listeners for McDonald's
+        clearResponseButton.addEventListener('click', () => {
+            responseOutput.textContent = '';
+            messageInfoSpan.textContent = ''; 
+            copyEmailButton.classList.add('hidden');
+            currentSuccessEmail = '';
+            copyEmailButton.innerHTML = '📧 Copy Email';
+        });
+
+        copyEmailButton.addEventListener('click', async () => {
+            if (!currentSuccessEmail) return;
+
+            try {
+                await navigator.clipboard.writeText(currentSuccessEmail);
+                copyEmailButton.innerHTML = '✅ Copied!';
+                setTimeout(() => {
+                    copyEmailButton.innerHTML = '📧 Copy Email';
+                }, 2000);
+            } catch (err) {
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = currentSuccessEmail;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    copyEmailButton.innerHTML = '✅ Copied!';
+                } catch (e) {
+                    copyEmailButton.innerHTML = '❌ Error';
+                }
+                
+                document.body.removeChild(tempTextArea);
+                setTimeout(() => {
+                    copyEmailButton.innerHTML = '📧 Copy Email';
+                }, 2000);
+            }
+        });
+
+        function populateGeneratedData() {
+            emailInput.value = generateIndonesianEmail();
+            fullNameInput.value = generateIndonesianFullName();
+            deviceIdInput.value = generateUUID();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateGeneratedData();
+            initializeReceipt();
+        });
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            responseOutput.textContent = ''; 
+            messageInfoSpan.textContent = ''; 
+            copyEmailButton.classList.add('hidden');
+            currentSuccessEmail = '';
+            copyEmailButton.innerHTML = '📧 Copy Email';
+
+            populateGeneratedData(); 
+
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-75', 'cursor-not-allowed');
+            loader.classList.remove('hidden');
+
+            const email = emailInput.value; 
+            const device_id = deviceIdInput.value; 
+            const full_name = fullNameInput.value; 
+
+            const requestBody = {
+                email: email,
+                device_id: device_id,
+                full_name: full_name
+            };
+
+            const apiUrl = 'https://api-promoscanstruk.mcdonalds.co.id/register';
+            const headers = {
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer',
+                'origin': 'https://promoscanstruk.mcdonalds.co.id',
+            };
+            
+            const allowedHeaders = new Headers();
+            Object.keys(headers).forEach(key => {
+                allowedHeaders.append(key, headers[key]);
+            });
+
+            try {
+                responseOutput.textContent = '⏳ Mengirim request...';
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: allowedHeaders,
+                    body: JSON.stringify(requestBody)
+                });
+
+                const responseData = await response.text();
+                
+                let formattedOutput = `📊 Status: ${response.status} ${response.statusText}\n\n📋 Response Headers:\n`;
+                response.headers.forEach((value, name) => {
+                    formattedOutput += `${name}: ${value}\n`;
+                });
+                formattedOutput += "\n📄 Response Body:\n";
+
+                try {
+                    const jsonData = JSON.parse(responseData);
+                    formattedOutput += JSON.stringify(jsonData, null, 2);
+                } catch (e) {
+                    formattedOutput += responseData;
+                }
+                responseOutput.textContent = formattedOutput;
+
+                if (response.ok) {
+                    console.log('API Success:', response.status, responseData);
+                    currentSuccessEmail = email;
+                    messageInfoSpan.innerHTML = `<span class="text-green-400">✅ Berhasil!</span> <span class="text-slate-300">Email: ${email}</span>`;
+                    copyEmailButton.classList.remove('hidden');
+                } else {
+                    console.error('API Error:', response.status, responseData);
+                    messageInfoSpan.innerHTML = `<span class="text-red-400">❌ Gagal</span> <span class="text-slate-400">Coba lagi</span>`; 
+                }
+
+            } catch (error) {
+                console.error('Fetch Error:', error);
+                responseOutput.textContent = `❌ Error: ${error.message}\n\n🔍 Kemungkinan penyebab:\n- Masalah jaringan\n- CORS policy dari server\n- Server tidak dapat diakses\n\nLihat browser console (F12) untuk detail lebih lanjut.`;
+                messageInfoSpan.innerHTML = `<span class="text-red-400">❌ Request gagal</span> <span class="text-slate-400">Lihat detail di bawah</span>`;
+            } finally {
+                submitButton.disabled = false;
+                submitButton.classList.remove('opacity-75', 'cursor-not-allowed');
+                loader.classList.add('hidden');
+            }
+        });
+
+        // FamilyMart Struk Generator Code
+        const cashierNames = [
+            'Andi Hardiansah', 'Siti Nurhaliza', 'Budi Santoso', 'Dewi Sartika', 
+            'Ahmad Fauzi', 'Linda Permata', 'Rizki Pratama', 'Maya Indah',
+            'Doni Setiawan', 'Rina Maharani', 'Fajar Nugroho', 'Indira Sari',
+            'Bayu Firmansyah', 'Kartika Dewi', 'Hendro Wijaya', 'Sari Melati',
+            'Yoga Pradana', 'Fitri Handayani', 'Arief Rahman', 'Novi Susanti'
+        ];
+
+        const stores = [
+            'CHANDRA GROUP LAMPUNG', 'BRASTAGI GROUP MEDAN', 'MAJU BERSAMA GROUP MEDAN',
+            'PASAR BUAH SUDIRMAN PEKANBARU', 'TRONA JAMBI', 'M MART DENPASAR',
+            'M MART MAKASSAR', 'M MART LOMBOK', 'PEPITO DENPASAR', 'PEPITO LOMBOK',
+            'BINTANG DENPASAR', 'MAXI BALIKPAPAN', 'IWAN MM SAMARINDA', 'IWAN MM BANJARMASIN',
+            'SEJAHTERA GROUP MAKASSAR', 'SEJAHTERA GROUP PALOPO', 'NAGA SWALAYAN JAKARTA',
+            'FAMILY MART JAKARTA', 'FAMILY MART SURABAYA', 'GRAND LUCKY JAKARTA',
+            'BORMA CIJERAH BANDUNG', 'SURYA CIREBON', 'ADA GROUP SEMARANG',
+            'LUWES GADING YOGYAKARTA', 'FOODMAX JAKARTA', 'DIAMOND JAKARTA',
+            'CITRA GROUP CS PADANG', 'GREENSMART JAWA TIMUR', 'HOKKY GROUP JAWA TIMUR',
+            'BRAVO GROUP JAWA TIMUR', 'ANEKA JAYA GROUP SEMARANG', 'COCO MART BALI',
+            'BENTENG MART MAKASSAR', 'PAMELLA YOGYAKARTA', 'IRIAN SUPERMARKET SUMATERA',
+            'SUZUYA MEDAN', 'RITA PASARAYA PURWOKERTO', 'EKTONG MAKASSAR',
+            'SAMUDRA MADIUN', 'FRESTIVE BALI'
+        ];
+
+        function generateRandomDate() {
+            const day = Math.floor(Math.random() * 31) + 1;
+            return `${day.toString().padStart(2, '0')}/05/2025`;
+        }
+
+        function generateDateTime() {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+    
+            const day = yesterday.getDate().toString().padStart(2, '0');
+            const month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
+            const year = yesterday.getFullYear();
+    
+            const jam = Math.floor(Math.random() * 24).toString().padStart(2, '0');
+            const menit = Math.floor(Math.random() * 60).toString().padStart(2, '0');
+    
+            return `${day}/${month}/${year} ${jam}:${menit} ICH 002`;
+}
+
+
+        function generateRCTNo() {
+            let rct = "";
+            for (let i = 0; i < 15; i++) {
+                rct += Math.floor(Math.random() * 10);
+            }
+            return rct;
+        }
+
+        function generateKodePembayaran() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            for (let i = 0; i < 12; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        function generateQRCode() {
+            const randomData = 'FM-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            return `https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=${randomData}`;
+        }
+        function initializeReceipt() {
+            document.getElementById("datetime").textContent = generateDateTime();
+            document.getElementById("rctcode").textContent = generateRCTNo();
+            document.getElementById("kodePembayaran").textContent = generateKodePembayaran();
+            
+            const randomCashier = cashierNames[Math.floor(Math.random() * cashierNames.length)];
+            document.getElementById("cashierName").textContent = randomCashier;
+            
+            const randomStore = stores[Math.floor(Math.random() * stores.length)];
+            document.getElementById("storeName").textContent = randomStore;
+            
+            document.getElementById("qrCode").src = generateQRCode();
+        }
+        function generateNewReceipt() {
+            initializeReceipt();
+        }
+    </script>
+</body>
+</html>
