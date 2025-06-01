@@ -641,24 +641,24 @@
         ];
 
         function generateRandomDate() {
-            const day = Math.floor(Math.random() * 31) + 1;
-            return `${day.toString().padStart(2, '0')}/05/2025`;
+            const start = new Date(2024, 11, 12);
+            const end = new Date(2025, 4, 31); 
+            const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+            
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            
+            return `${day}/${month}/${year}`;
         }
 
         function generateDateTime() {
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-    
-            const day = yesterday.getDate().toString().padStart(2, '0');
-            const month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
-            const year = yesterday.getFullYear();
-    
+            const randomDate = generateRandomDate(); // Ambil tanggal acak
+            const [day, month, year] = randomDate.split('/'); // Pisahkan tanggal, bulan, tahun
             const jam = Math.floor(Math.random() * 24).toString().padStart(2, '0');
             const menit = Math.floor(Math.random() * 60).toString().padStart(2, '0');
-    
             return `${day}/${month}/${year} ${jam}:${menit} ICH 002`;
-}
-
+        }
 
         function generateRCTNo() {
             let rct = "";
