@@ -625,20 +625,39 @@
         ];
 
         const stores = [
-            'CHANDRA GROUP LAMPUNG', 'BRASTAGI GROUP MEDAN', 'MAJU BERSAMA GROUP MEDAN',
-            'PASAR BUAH SUDIRMAN PEKANBARU', 'TRONA JAMBI', 'M MART DENPASAR',
-            'M MART MAKASSAR', 'M MART LOMBOK', 'PEPITO DENPASAR', 'PEPITO LOMBOK',
-            'BINTANG DENPASAR', 'MAXI BALIKPAPAN', 'IWAN MM SAMARINDA', 'IWAN MM BANJARMASIN',
-            'SEJAHTERA GROUP MAKASSAR', 'SEJAHTERA GROUP PALOPO', 'NAGA SWALAYAN JAKARTA',
-            'FAMILY MART JAKARTA', 'FAMILY MART SURABAYA', 'GRAND LUCKY JAKARTA',
-            'BORMA CIJERAH BANDUNG', 'SURYA CIREBON', 'ADA GROUP SEMARANG',
-            'LUWES GADING YOGYAKARTA', 'FOODMAX JAKARTA', 'DIAMOND JAKARTA',
-            'CITRA GROUP CS PADANG', 'GREENSMART JAWA TIMUR', 'HOKKY GROUP JAWA TIMUR',
-            'BRAVO GROUP JAWA TIMUR', 'ANEKA JAYA GROUP SEMARANG', 'COCO MART BALI',
-            'BENTENG MART MAKASSAR', 'PAMELLA YOGYAKARTA', 'IRIAN SUPERMARKET SUMATERA',
-            'SUZUYA MEDAN', 'RITA PASARAYA PURWOKERTO', 'EKTONG MAKASSAR',
-            'SAMUDRA MADIUN', 'FRESTIVE BALI'
+            'GRAHA PENA',
+            'PETRA SURABAYA',
+            'PAKUWON CITY',
+            'RUNGKUT MADYA',
+            'MERR',
+            'MANYAR KERTOARJO',
+            'TENGGILIS',
+            'NGAGEL JAYA',
+            'MULYOSARI',
+            'DHARMAHUSADA',
+            'DARMO PERMAI',
+            'EMBONG MALANG',
+            'WIYUNG',
+            'CITRALAND',
+            'TAMAN PALEM',
+            'ITC CEMPAKA MAS',
+            'KOTA KASABLANKA',
+            'PACIFIC PLACE',
+            'PLAZA FESTIVAL',
+            'MALL AMBASSADOR',
+            'SENAYAN CITY',
+            'PONDOK INDAH MALL',
+            'GANDARIA CITY',
+            'LIPPO MALL PURI',
+            'GREEN PRAMUKA SQUARE',
+            'FX SUDIRMAN',
+            'PLAZA INDONESIA',
+            'MALL KELAPA GADING',
+            'MALL ARTHA GADING'
         ];
+        function getRandomFamilyMart() {
+            return Math.random() < 0.5 ? 'FMI' : 'FME';
+        }
 
         function generateRandomDate() {
             const start = new Date(2024, 11, 12);
@@ -690,7 +709,8 @@
             document.getElementById("cashierName").textContent = randomCashier;
             
             const randomStore = stores[Math.floor(Math.random() * stores.length)];
-            document.getElementById("storeName").textContent = randomStore;
+            const storeNameWithPrefix = `${getRandomFamilyMart()} ${randomStore}`;
+            document.getElementById("storeName").textContent = storeNameWithPrefix;
             
             document.getElementById("qrCode").src = generateQRCode();
         }
