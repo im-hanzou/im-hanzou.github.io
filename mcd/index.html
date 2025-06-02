@@ -438,14 +438,13 @@
             return Math.floor(Math.random() * Math.pow(10, digits)).toString().padStart(digits, '0');
         }
 
-        function generateIndonesianEmail() {
+        function generateIndonesianNameAndEmail() {
             const firstNames = [
                 "adrian", "budi", "sari", "doni", "eka", "fajar", "gita", "hadi", "indri", "joko",
                 "kartika", "lina", "made", "nina", "oscar", "putri", "qori", "rizki", "sinta", "tono",
                 "umi", "vina", "wati", "yoga", "zahra", "agus", "bayu", "citra", "dewi", "edi",
                 "fitri", "galih", "hesti", "imam", "jeni", "kiki", "lusi", "mira", "nanda", "okta"
             ];
-            
             const lastNames = [
                 "saputra", "pratama", "wijaya", "kusuma", "anggraeni", "permata", "santoso", "lestari", 
                 "maharani", "nugroho", "utami", "hermanto", "salsabila", "ramadhan", "purnama", "safitri",
@@ -453,36 +452,15 @@
                 "suryadi", "melati", "pradana", "andini", "firmansyah", "pertiwi", "gunawan", "cahyani",
                 "wibowo", "mulyani", "hakim", "damayanti", "irawan", "oktaviani", "surya", "puspita"
             ];
-
             const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
             const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
             const randomNumber = getRandomNumber(5);
-            
-            return `${firstName}.${lastName}.${randomNumber}@gmail.com`;
+            const email = `${firstName}.${lastName}.${randomNumber}@gmail.com`;
+            // Capitalize first letter for full name
+            const fullName = `${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName.charAt(0).toUpperCase() + lastName.slice(1)}`;
+            return { email, fullName };
         }
-
-        function generateIndonesianFullName() {
-            const firstNames = [
-                "Adrian", "Budi", "Sari", "Doni", "Eka", "Fajar", "Gita", "Hadi", "Indri", "Joko",
-                "Kartika", "Lina", "Made", "Nina", "Oscar", "Putri", "Qori", "Rizki", "Sinta", "Tono",
-                "Umi", "Vina", "Wati", "Yoga", "Zahra", "Agus", "Bayu", "Citra", "Dewi", "Edi",
-                "Fitri", "Galih", "Hesti", "Imam", "Jeni", "Kiki", "Lusi", "Mira", "Nanda", "Okta"
-            ];
-            
-            const lastNames = [
-                "Saputra", "Pratama", "Wijaya", "Kusuma", "Anggraeni", "Permata", "Santoso", "Lestari", 
-                "Maharani", "Nugroho", "Utami", "Hermanto", "Salsabila", "Ramadhan", "Purnama", "Safitri",
-                "Kurniawan", "Rahayu", "Setiawan", "Handayani", "Maulana", "Fitriani", "Budiman", "Kartini",
-                "Suryadi", "Melati", "Pradana", "Andini", "Firmansyah", "Pertiwi", "Gunawan", "Cahyani",
-                "Wibowo", "Mulyani", "Hakim", "Damayanti", "Irawan", "Oktaviani", "Surya", "Puspita"
-            ];
-
-            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-            const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-            
-            return `${firstName} ${lastName}`;
-        }
-
+        
         // Event Listeners for McDonald's
         clearResponseButton.addEventListener('click', () => {
             responseOutput.textContent = '';
@@ -522,11 +500,12 @@
         });
 
         function populateGeneratedData() {
-            emailInput.value = generateIndonesianEmail();
-            fullNameInput.value = generateIndonesianFullName();
+            const { email, fullName } = generateIndonesianNameAndEmail();
+            emailInput.value = email;
+            fullNameInput.value = fullName;
             deviceIdInput.value = generateUUID();
         }
-
+        
         document.addEventListener('DOMContentLoaded', () => {
             populateGeneratedData();
             initializeReceipt();
@@ -660,20 +639,17 @@
         }
 
         function generateRandomDate() {
-            const start = new Date(2024, 11, 12);
-            const end = new Date(2025, 4, 31); 
-            const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-            
-            const day = date.getDate().toString().padStart(2, '0');
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const year = date.getFullYear();
-            
+            const now = new Date();
+            now.setDate(now.getDate() - 1);
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const year = now.getFullYear();
             return `${day}/${month}/${year}`;
         }
 
         function generateDateTime() {
-            const randomDate = generateRandomDate(); // Ambil tanggal acak
-            const [day, month, year] = randomDate.split('/'); // Pisahkan tanggal, bulan, tahun
+            const randomDate = generateRandomDate();
+            const [day, month, year] = randomDate.split('/');
             const jam = Math.floor(Math.random() * 24).toString().padStart(2, '0');
             const menit = Math.floor(Math.random() * 60).toString().padStart(2, '0');
             return `${day}/${month}/${year} ${jam}:${menit} ICH 002`;
